@@ -25,7 +25,7 @@ export function getPerformance() {
     const tcpTime = connectEnd - connectStart
     const requestTime = responseEnd - requestStart;
 
-    const performaceInfo: PerformanceInfo = {
+    const performanceInfo: PerformanceInfo = {
         pageLoadTime,
         whiteScreenTime,
         directTime: redirectTime,
@@ -35,5 +35,5 @@ export function getPerformance() {
         requestTime
     }
 
-    return performaceInfo
+    return performanceInfo
 }

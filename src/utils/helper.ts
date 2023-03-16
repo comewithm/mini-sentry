@@ -12,3 +12,29 @@ export const GLOBAL_OBJ =
     {};
 
 export const WINDOW = GLOBAL_OBJ
+
+
+export function getGlobalInstance(name, customClassInstance:() => any, ins) {
+    const obj = ins || GLOBAL_OBJ
+    const __SENTRY__ = obj.__SENTRY__ || {}
+
+    const instance = __SENTRY__[name] = customClassInstance()
+
+    return instance
+}
+
+
+export function arrayToString(args:any[], separator:string = " ") {
+    const message:any[] = []
+
+    args.forEach(v => {
+        message.push(v + '')
+    })
+
+    return message.join(separator)
+}
+
+
+export function getTimestamp() {
+    return Date.now() / 1000
+}

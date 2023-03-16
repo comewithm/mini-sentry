@@ -1,11 +1,16 @@
+import { getCurrentStore } from "core/store";
+import { IBreadCrumbOptions } from "interface/breadcrumb";
+import { arrayToString } from "utils/helper";
 import { addIntoHandle } from "utils/integration";
+
+type THandleData = Record<string, unknown>
 
 export class BreadCrumb {
     public name;
 
-    public options:BreadCrumbOptions
+    public options:IBreadCrumbOptions
 
-    constructor(options?: Partial<BreadCrumbOptions>) {
+    constructor(options?: Partial<IBreadCrumbOptions>) {
         this.options = {
             console: true,
             xhr: true,
@@ -38,7 +43,26 @@ export class BreadCrumb {
     }
 }
 
-function consoleCallback(){}
+// handleData为触发addIntoHandle(type, data)中的data
+function consoleCallback(handleData: THandleData & {args: unknown[]; level:string}){
+
+    const crumb = {
+        type: "console",
+        data: {
+            args: handleData.args,
+            logger: "console"
+        },
+        level: handleData.level,
+        message: arrayToString(handleData.args)
+    }
+
+    // 添加到store中
+
+    getCurrentStore().addBreadcrumb(crumb, {
+        level: handleData.level,
+        args: handleData.data
+    })
+}
 
 function xhrCallback(){}
 

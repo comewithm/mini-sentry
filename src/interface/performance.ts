@@ -1,4 +1,4 @@
-interface PerformanceInfo {
+interface IPerformanceInfo {
     pageLoadTime?: number;
     whiteScreenTime?: number;
     directTime?: number;

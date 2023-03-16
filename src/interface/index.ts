@@ -1,10 +1,10 @@
 
 
-interface Options {
+interface IOptions {
     [key: string]: any;
-    performace: boolean;
+    performance: boolean;
 }
 
-type HandleType = "xhr" | 'fetch' | 'history' | 'console' | 'error' | 'unhandledrejection'
+type THandleType = "xhr" | 'fetch' | 'history' | 'console' | 'error' | 'unhandledrejection'
 
-type HandleCallback = (data: any) => void
+type THandleCallback = (data: any) => void
