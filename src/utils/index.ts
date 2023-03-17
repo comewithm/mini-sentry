@@ -35,14 +35,15 @@ export const fill = (
         return
     }
     // 原属性上的方法
-    const original = source[name]
-
+    const original = source[name] as Function
+    // 执行包装函数
     const wrapped = replacementFactory(original)
 
     if(typeof wrapped === "function") {
+        // 包装函数上添加原生函数
         markFunctionWrapped(wrapped, original)
     }
-
+    // 替换为包装函数
     source[name] = wrapped
 }
 

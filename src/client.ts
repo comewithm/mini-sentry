@@ -7,17 +7,17 @@ type ClientClass<F extends IClient, T extends IClientOptions> = new (options: T)
 // 包含所有方法
 export abstract class BaseClient<O extends IClientOptions> implements IClient<O>{
 
-    readonly options: O;
+    public readonly options: O;
 
     constructor(options) {
         this.options = options
     }
 
-    captureEvent(exception: any, hint: any): void {
+    captureMessage(message: any, hint: any): void {
         
     }
 
-    captureMessage(message: any, hint: any): void {
+    captureException(exception: any, hint?: any): void {
         
     }
 

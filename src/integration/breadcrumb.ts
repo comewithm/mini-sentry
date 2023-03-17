@@ -1,7 +1,8 @@
 import { getCurrentStore } from "core/store";
 import { IBreadCrumbOptions } from "interface/breadcrumb";
+import { IFetchData } from "interface/request";
 import { arrayToString } from "utils/helper";
-import { addIntoHandle } from "utils/integration";
+import { pushHandlers } from "utils/integration";
 
 type THandleData = Record<string, unknown>
 
@@ -29,16 +30,16 @@ export class BreadCrumb {
 
         }
         if(this.options.console) {
-            addIntoHandle("console", consoleCallback)
+            pushHandlers("console", consoleCallback)
         }
         if(this.options.xhr) {
-            addIntoHandle("xhr", xhrCallback)
+            pushHandlers("xhr", xhrCallback)
         }
         if(this.options.fetch) {
-            addIntoHandle("fetch", fetchCallback)
+            pushHandlers("fetch", fetchCallback)
         }
         if(this.options.history) {
-            addIntoHandle("history", historyCallback)
+            pushHandlers("history", historyCallback)
         }
     }
 }
@@ -66,6 +67,32 @@ function consoleCallback(handleData: THandleData & {args: unknown[]; level:strin
 
 function xhrCallback(){}
 
-function fetchCallback(){}
+function fetchCallback(handleData: THandleData & IFetchData){
+
+    // 请求成功或者请求失败
+    if(handleData.error) {
+        getCurrentStore().addBreadcrumb({
+            type: "fetch",
+            data: handleData.data,
+            level: 'error',
+            superType: "http"
+        }, {
+            data: handleData.error,
+            input: handleData.args
+        })
+    } else {
+        getCurrentStore().addBreadcrumb({
+            type: "fetch",
+            data: {
+                ...handleData.data,
+                statusCode: handleData.response && handleData.response.status
+            },
+            superType: "http"
+        }, {
+            input: handleData.args,
+            response: handleData.response
+        })
+    }
+}
 
 function historyCallback(){}

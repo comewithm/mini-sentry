@@ -1,4 +1,6 @@
 
+export const MAX_BREADCRUMB = 50
+
 
 export interface IBreadCrumbOptions {
     xhr: boolean;
@@ -10,7 +12,7 @@ export interface IBreadCrumbOptions {
 
 export interface IBreadCrumb {
     type?: string;
-    subtype?: string;
+    superType?: string;
     data?: {[key:string]: any};
     message?: string;
     timestamp?:number;

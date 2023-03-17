@@ -1,16 +1,18 @@
-import { IBreadCrumb } from "interface/breadcrumb"
+import { IRedux } from "integration/redux"
+import { IBreadCrumb, MAX_BREADCRUMB } from "interface/breadcrumb"
 import { IClient } from "interface/client"
 import { IClientOptions } from "interface/options"
 import { IStore, IStoreInfo } from "interface/store"
 import { getGlobalInstance, getTimestamp, GLOBAL_OBJ } from "utils/helper"
+import { Redux } from "./redux"
 
-const MAX_BREADCRUMB = 50
 
 export class Store implements IStore{
 
     readonly storeStack: IStoreInfo[] = []
 
-    constructor(client?:IClient) {
+    constructor(client?:IClient, redux:IRedux = new Redux()) {
+        this.getStore().redux = redux
         if(client) {
             this.bindClient(client)
         }
@@ -28,6 +30,30 @@ export class Store implements IStore{
     getClient(): IClient | undefined {
         const top = this.getStore()
         return top.client
+    }
+
+    getRedux(): IRedux | undefined {
+        return this.getStore().redux
+    }
+
+    setStoreCallback(callback:(client: IClient, redux: IRedux) => void){
+        const {client, redux} = this.getStore()
+
+        if(client) {
+            callback(client, redux)
+        }
+    }
+
+    captureException(exception: any, hint?: any): void {
+        const {client} = this.getStore()
+
+        client.captureException(exception, hint)
+    }
+
+    captureMessage(message: string, hint?: any): void {
+        const {client} = this.getStore()
+        
+        client.captureMessage(message, hint)
     }
 
 
