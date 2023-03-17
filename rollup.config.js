@@ -8,7 +8,7 @@ export default {
     output: {
         file: 'bundle.js',
         name: "./dist",
-        format: "umd",
+        format: "iife",
         sourcemap: true
     },
     plugins: [
