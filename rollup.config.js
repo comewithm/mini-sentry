@@ -6,7 +6,8 @@ import typescript from '@rollup/plugin-typescript'
 export default {
     input: 'src/index.ts',
     output: {
-        file: './dist/bundle.js',
+        file: 'bundle.js',
+        name: "./dist",
         format: "umd",
         sourcemap: true
     },

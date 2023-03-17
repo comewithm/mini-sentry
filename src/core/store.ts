@@ -1,15 +1,20 @@
 import { IRedux } from "integration/redux"
-import { IBreadCrumb, MAX_BREADCRUMB } from "interface/breadcrumb"
+import { IBreadCrumb, IBreadCrumbHint, MAX_BREADCRUMB } from "interface/breadcrumb"
 import { IClient } from "interface/client"
+import { IEventHint } from "interface/event"
 import { IClientOptions } from "interface/options"
 import { IStore, IStoreInfo } from "interface/store"
-import { getGlobalInstance, getTimestamp, GLOBAL_OBJ } from "utils/helper"
+import { createUUID, getGlobalInstance, getTimestamp, GLOBAL_OBJ } from "utils/helper"
 import { Redux } from "./redux"
 
 
 export class Store implements IStore{
 
-    readonly storeStack: IStoreInfo[] = []
+    private readonly storeStack: IStoreInfo[] = []
+
+    private eventId?:string
+
+
 
     constructor(client?:IClient, redux:IRedux = new Redux()) {
         this.getStore().redux = redux
@@ -18,25 +23,25 @@ export class Store implements IStore{
         }
     }
 
-    getStore():IStoreInfo {
+    public getStore():IStoreInfo {
         return this.storeStack[this.storeStack.length - 1]
     }
 
-    bindClient(client: IClient<IClientOptions>): void {
+    public bindClient(client: IClient<IClientOptions>): void {
         const top = this.getStore()
         top.client = client
     }
 
-    getClient(): IClient | undefined {
+    public getClient(): IClient | undefined {
         const top = this.getStore()
         return top.client
     }
 
-    getRedux(): IRedux | undefined {
+    public getRedux(): IRedux | undefined {
         return this.getStore().redux
     }
 
-    setStoreCallback(callback:(client: IClient, redux: IRedux) => void){
+    public setStoreCallback(callback:(client: IClient, redux: IRedux) => void){
         const {client, redux} = this.getStore()
 
         if(client) {
@@ -44,26 +49,63 @@ export class Store implements IStore{
         }
     }
 
-    captureException(exception: any, hint?: any): void {
-        const {client} = this.getStore()
+    public captureException(exception: any, hint?: IEventHint): string {
+        this.eventId = hint && hint.event_id ? hint.event_id : createUUID()
+        const eventId = this.eventId!
+        const syntheticException = new Error("Sentry syntheticException")
 
-        client.captureException(exception, hint)
+        this.setStoreCallback((client, redux) => {
+            client.captureException(exception, {
+                originalException: exception,
+                syntheticException,
+                ...hint,
+                event_id: eventId
+            }, redux)
+        })
+        return eventId
     }
 
-    captureMessage(message: string, hint?: any): void {
-        const {client} = this.getStore()
-        
-        client.captureMessage(message, hint)
+    public captureMessage(message: string, hint?: IEventHint): string {
+        this.eventId = hint && hint.event_id ? hint.event_id : createUUID()
+        const eventId = this.eventId
+        const syntheticException = new Error(message)
+
+        this.setStoreCallback((client, redux) => {
+            client.captureMessage(message, {
+                originalException:message,
+                syntheticException,
+                ...hint,
+                event_id: eventId
+            }, redux)
+        })
+
+        return eventId
+    }
+
+    public captureEvent(event: Event, hint?: IEventHint | undefined): string {
+        const eventId = hint && hint.event_id ? hint.event_id : createUUID()
+        if(!event.type) {
+            this.eventId = eventId
+        }
+
+        this.setStoreCallback((client, redux) => {
+            client.captureEvent(event, {
+                ...hint,
+                event_id: eventId
+            }, redux)
+        })
+
+        return eventId
     }
 
 
-    addBreadcrumb(breadCrumb: IBreadCrumb, hint: any): void {
-        const {client} = this.getStore()
+    public addBreadcrumb(breadCrumb: IBreadCrumb, hint: IBreadCrumbHint): void {
+        const {client, redux} = this.getStore()
 
         if(!client) return
 
         // 这里是用户选项设置的属性
-        const {beforeCrumb = null, maxBreadCrumb = MAX_BREADCRUMB} = client.getOptions()
+        // const {beforeCrumb = null, maxBreadCrumb = MAX_BREADCRUMB} = client.getOptions()
 
         const timestamp = getTimestamp()
 
@@ -73,7 +115,7 @@ export class Store implements IStore{
         }
 
         // TODO:设置scope???
-
+        redux.addBreadCrumb(mergedBreadcrumb)
     }
 
 }

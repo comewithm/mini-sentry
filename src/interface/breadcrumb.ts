@@ -19,3 +19,10 @@ export interface IBreadCrumb {
     level?: string;
     event_id?:string; 
 }
+
+export interface IBreadCrumbHint {
+    input?:any[];
+    data?: any;
+    args?:any[];
+    response?: any;
+}

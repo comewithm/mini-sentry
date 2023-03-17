@@ -1,5 +1,7 @@
 import { getCurrentStore } from "core/store";
+import { IRedux } from "integration/redux";
 import { IClient } from "interface/client";
+import { IEventHint } from "interface/event";
 import { IClientOptions } from "interface/options";
 
 type ClientClass<F extends IClient, T extends IClientOptions> = new (options: T) => F
@@ -13,15 +15,25 @@ export abstract class BaseClient<O extends IClientOptions> implements IClient<O>
         this.options = options
     }
 
-    captureMessage(message: any, hint: any): void {
-        
+    public captureMessage(message: any, hint: IEventHint, redux?:IRedux): string | undefined {
+        return
     }
 
-    captureException(exception: any, hint?: any): void {
-        
+    public captureException(exception: any, hint?: IEventHint, redux?:IRedux): string | undefined {
+        let eventId:string | undefined = hint?.event_id
+        console.log("capture exception:", exception)
+        console.log("capture event hint:", hint)
+        return eventId
     }
 
-    getOptions(): O {
+    public captureEvent(event: Event, hint?: IEventHint | undefined, redux?: IRedux | undefined): string | undefined {
+        let eventId:string | undefined = hint?.event_id
+        console.log("capture event:", event)
+        console.log("capture event hint:", hint)
+        return eventId
+    }
+
+    public getOptions(): O {
         return this.options
     }
 

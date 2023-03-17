@@ -31,7 +31,7 @@ export class GlobalHandler {
         this.setup()
     }
 
-    setup() {
+    public setup() {
         const options = this.options
 
         for (const key in options) {
@@ -62,6 +62,8 @@ function globalErrorHandler(){
             level: "error"
         }
 
+
+
         addEventAndCapture(store, errorInfo.error, event, "onerror")
     })
 }
@@ -78,5 +80,7 @@ function addEventAndCapture(
     type: string
 ) {
 
-    // 
+    store.captureEvent(event, {
+        originalException: error
+    })
 }

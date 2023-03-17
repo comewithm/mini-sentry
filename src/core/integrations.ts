@@ -1,3 +1,4 @@
+import { IOptions } from "interface"
 
 
 export function mergeIntegrations(options:IOptions) {

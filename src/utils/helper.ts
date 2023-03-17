@@ -38,3 +38,7 @@ export function arrayToString(args:any[], separator:string = " ") {
 export function getTimestamp() {
     return Date.now() / 1000
 }
+
+export function createUUID() {
+    return URL.createObjectURL(new Blob([''])).split('/').pop() as string
+}

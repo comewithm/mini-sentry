@@ -1,7 +1,8 @@
 
 import { IRedux } from "integration/redux";
-import { IBreadCrumb } from "./breadcrumb";
+import { IBreadCrumb, IBreadCrumbHint } from "./breadcrumb";
 import { IClient } from "./client";
+import { IEventHint } from "./event";
 
 
 export interface IStoreInfo {
@@ -15,9 +16,11 @@ export interface IStore {
 
     getClient(): IClient | undefined
 
-    addBreadcrumb(breadCrumb: IBreadCrumb, hint?: any):void
+    addBreadcrumb(breadCrumb: IBreadCrumb, hint?: IBreadCrumbHint):void
 
-    captureException(exception: any, hint?: any): void
+    captureException(exception: any, hint?: IEventHint): string
 
-    captureMessage(message: string, hint?: any): void
+    captureMessage(message: string, hint?: IEventHint): string
+
+    captureEvent(event: Event, hint?: IEventHint): string
 }
