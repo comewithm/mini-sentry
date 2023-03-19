@@ -5,14 +5,18 @@ import { BreadCrumb } from "integration/breadcrumb";
 import { mergeIntegrations } from "core/integrations";
 import { IOptions } from "interface";
 import { GlobalHandler } from "integration/globalhandler";
+import { SHOULD_LOG } from "./cons";
 
 
 export const defaultIntegrations = [
     new BreadCrumb(),
     new GlobalHandler()
+
 ]
 
 export function init(options: IOptions) {
+
+    SHOULD_LOG && console.log("init")
 
     if(options.defaultIntegrations == undefined) {
         options.defaultIntegrations = defaultIntegrations
@@ -27,3 +31,8 @@ export function init(options: IOptions) {
     // 实例类，不是抽象类
     initClient(BrowserClient,  baseOptions)
 }
+
+;(function(){
+
+    init({})
+})()

@@ -1,3 +1,4 @@
+import { SHOULD_LOG } from "cons";
 import { THandleCallback, THandleType } from "interface";
 import { IFetchData } from "interface/request";
 import { fill, getFetchMethod, getFetchUrl } from "utils";
@@ -66,6 +67,8 @@ function collectType(type: THandleType) {
 function handleError(){
     const originalError = WINDOW.onerror
 
+    SHOULD_LOG && console.log("trigger error")
+
     WINDOW.onerror = function(
         message: any,
         url: any,
@@ -88,7 +91,18 @@ function handleError(){
     }
 }
 
-function handlerUnhandledrejection(){}
+function handlerUnhandledrejection(){
+    const originalRejection = WINDOW.onunhandledrejection
+    WINDOW.onunhandledrejection = function(e) {
+        triggerHandlers("unhandledrejection", e)
+
+        if(originalRejection) {
+            return originalRejection.apply(this, arguments)
+        }
+
+        return true
+    }
+}
 
 function handleFetch(){
 

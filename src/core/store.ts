@@ -10,13 +10,13 @@ import { Redux } from "./redux"
 
 export class Store implements IStore{
 
-    private readonly storeStack: IStoreInfo[] = []
+    private readonly storeStack: IStoreInfo[] = [{}]
 
     private eventId?:string
 
 
 
-    constructor(client?:IClient, redux:IRedux = new Redux()) {
+    constructor(client?:IClient, redux:Redux = new Redux()) {
         this.getStore().redux = redux
         if(client) {
             this.bindClient(client)
@@ -28,8 +28,7 @@ export class Store implements IStore{
     }
 
     public bindClient(client: IClient<IClientOptions>): void {
-        const top = this.getStore()
-        top.client = client
+        this.getStore().client = client
     }
 
     public getClient(): IClient | undefined {
@@ -130,7 +129,7 @@ export function getMain() {
 }
 
 export function hasStore() {
-    return !!(GLOBAL_OBJ && GLOBAL_OBJ.__SENTRY__ && GLOBAL_OBJ.__SENTRY__.hub)
+    return !!(GLOBAL_OBJ && GLOBAL_OBJ.__SENTRY__ && GLOBAL_OBJ.__SENTRY__.store)
 }
 
 export function createStore(register, store:Store): boolean {

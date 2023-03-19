@@ -13,12 +13,11 @@ export const GLOBAL_OBJ =
 
 export const WINDOW = GLOBAL_OBJ
 
-
 export function getGlobalInstance(name, customClassInstance:() => any, ins) {
     const obj = ins || GLOBAL_OBJ
     const __SENTRY__ = obj.__SENTRY__ || {}
 
-    const instance = __SENTRY__[name] = customClassInstance()
+    const instance = __SENTRY__[name] || (__SENTRY__[name] = customClassInstance())
 
     return instance
 }

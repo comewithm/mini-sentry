@@ -1,3 +1,4 @@
+import { SHOULD_LOG } from "cons";
 import { getCurrentStore } from "core/store";
 import { IBreadCrumbOptions } from "interface/breadcrumb";
 import { IFetchData } from "interface/request";
@@ -12,6 +13,7 @@ export class BreadCrumb {
     public options:IBreadCrumbOptions
 
     constructor(options?: Partial<IBreadCrumbOptions>) {
+        SHOULD_LOG && console.log("init breadcrumb", options)
         this.options = {
             console: true,
             xhr: true,

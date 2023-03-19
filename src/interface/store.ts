@@ -1,13 +1,13 @@
 
-import { IRedux } from "integration/redux";
+import { Redux } from "core/redux";
 import { IBreadCrumb, IBreadCrumbHint } from "./breadcrumb";
 import { IClient } from "./client";
 import { IEventHint } from "./event";
 
 
 export interface IStoreInfo {
-    client: IClient,
-    redux: IRedux
+    client?: IClient,
+    redux?: Redux
 }
 
 export interface IStore {

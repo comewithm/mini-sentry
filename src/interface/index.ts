@@ -2,7 +2,7 @@
 
 export interface IOptions {
     [key: string]: any;
-    performance: boolean;
+    // performance: boolean;
 }
 
 export type THandleType = "xhr" | 'fetch' | 'history' | 'console' | 'error' | 'unhandledrejection'

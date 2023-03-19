@@ -1,3 +1,4 @@
+import { SHOULD_LOG } from "cons";
 import { getCurrentStore, Store } from "core/store";
 import { pushHandlers } from "utils/integration";
 
@@ -22,6 +23,7 @@ export class GlobalHandler {
     }
 
     constructor(options?:TGlobalHandleOption) {
+        SHOULD_LOG && console.log("init GlobalHandler", options)
         this.options = {
             onerror: true,
             onunhandledrejection: true,
@@ -44,6 +46,7 @@ export class GlobalHandler {
 }
 
 function globalErrorHandler(){
+    SHOULD_LOG && console.log("init globalErrorHandler")
     // 执行error回调
     pushHandlers("error", function errorCallback(
         errorInfo: {
@@ -62,14 +65,18 @@ function globalErrorHandler(){
             level: "error"
         }
 
-
-
         addEventAndCapture(store, errorInfo.error, event, "onerror")
     })
 }
 
 function globalRejectionHandler(){
     // 执行unhandledrejection回调
+    SHOULD_LOG && console.log("init globalRejectionHandler")
+
+    pushHandlers("unhandledrejection", function unhandledCallback(e) {
+        SHOULD_LOG && console.log("globalRejectionHandler error:", e)
+    })
+
 }
 
 
