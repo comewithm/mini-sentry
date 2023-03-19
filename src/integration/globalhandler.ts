@@ -1,5 +1,6 @@
 import { SHOULD_LOG } from "cons";
 import { getCurrentStore, Store } from "core/store";
+import { IIntegration } from "interface";
 import { pushHandlers } from "utils/integration";
 
 
@@ -10,7 +11,7 @@ type TGlobalHandleOption = {
 
 type TGlobalHandleOptionKeys = keyof TGlobalHandleOption
 
-export class GlobalHandler {
+export class GlobalHandler implements IIntegration {
     public static id:string = "global_handler";
 
     public name:string = GlobalHandler.id;
@@ -30,7 +31,6 @@ export class GlobalHandler {
             ...options
         }
 
-        this.setup()
     }
 
     public setup() {
@@ -75,6 +75,19 @@ function globalRejectionHandler(){
 
     pushHandlers("unhandledrejection", function unhandledCallback(e) {
         SHOULD_LOG && console.log("globalRejectionHandler error:", e)
+
+        let error = e;
+
+        error.level = "error"
+
+        const store = getCurrentStore()
+
+        const event = {
+            type: "unhandledrejection",
+            value: error
+        }
+
+        addEventAndCapture(store, error, event, "unhandledrejection")
     })
 
 }

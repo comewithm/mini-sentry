@@ -29,6 +29,10 @@ export class Store implements IStore{
 
     public bindClient(client: IClient<IClientOptions>): void {
         this.getStore().client = client
+        // 绑定之后再初始化integrations
+        if(client && client.setupIntegrations) {
+            client.setupIntegrations()
+        }
     }
 
     public getClient(): IClient | undefined {
@@ -98,7 +102,7 @@ export class Store implements IStore{
     }
 
 
-    public addBreadcrumb(breadCrumb: IBreadCrumb, hint: IBreadCrumbHint): void {
+    public addBreadcrumb(breadCrumb: IBreadCrumb, hint?: IBreadCrumbHint): void {
         const {client, redux} = this.getStore()
 
         if(!client) return
@@ -154,4 +158,8 @@ export function getCurrentStore():Store{
     }
 
     return getGlobalInstance('store', () => new Store() ,register)
+}
+
+export function addGlobalEvent(callback) {
+    getGlobalInstance('globalEvent', () => []).push(callback)
 }

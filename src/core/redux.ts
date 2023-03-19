@@ -27,6 +27,8 @@ export class Redux implements IRedux {
             mergedBreadcrumb
         ]
 
+        console.log("this.breadcrumb:", this.breadcrumb)
+
         return this
     }
 

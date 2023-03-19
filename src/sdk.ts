@@ -10,7 +10,7 @@ import { SHOULD_LOG } from "./cons";
 
 export const defaultIntegrations = [
     new BreadCrumb(),
-    new GlobalHandler()
+    new GlobalHandler(),
 
 ]
 
@@ -32,7 +32,9 @@ export function init(options: IOptions) {
     initClient(BrowserClient,  baseOptions)
 }
 
-;(function(){
-
-    init({})
-})()
+init({
+    performance: true,
+    xhr: true,
+    history: true,
+    fetch: true
+})

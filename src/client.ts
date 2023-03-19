@@ -1,5 +1,7 @@
+import { setupIntegrations } from "core/integrations";
 import { getCurrentStore } from "core/store";
 import { IRedux } from "integration/redux";
+import { IIntegrationIndex } from "interface";
 import { IClient } from "interface/client";
 import { IEventHint } from "interface/event";
 import { IClientOptions } from "interface/options";
@@ -9,7 +11,11 @@ type ClientClass<F extends IClient, T extends IClientOptions> = new (options: T)
 // 包含所有方法
 export abstract class BaseClient<O extends IClientOptions> implements IClient<O>{
 
-    public readonly options: O;
+    protected readonly options: O;
+
+    protected isSetup: boolean = false;
+
+    protected integrations:IIntegrationIndex = {}
 
     constructor(options) {
         this.options = options
@@ -21,20 +27,30 @@ export abstract class BaseClient<O extends IClientOptions> implements IClient<O>
 
     public captureException(exception: any, hint?: IEventHint, redux?:IRedux): string | undefined {
         let eventId:string | undefined = hint?.event_id
-        console.log("capture exception:", exception)
-        console.log("capture event hint:", hint)
+        console.log("captureException exception:", exception)
+        console.log("captureException hint:", hint)
+        console.log("captureException redux:", redux)
         return eventId
     }
 
     public captureEvent(event: Event, hint?: IEventHint | undefined, redux?: IRedux | undefined): string | undefined {
         let eventId:string | undefined = hint?.event_id
         console.log("capture event:", event)
-        console.log("capture event hint:", hint)
+        console.log("capture hint:", hint)
+        console.log("capture redux:", redux)
         return eventId
     }
 
     public getOptions(): O {
         return this.options
+    }
+
+    public setupIntegrations(): void {
+        if(!this.isSetup) {
+            this.isSetup = true
+            // 初始化
+            this.integrations = setupIntegrations(this.options.integrations)
+        }
     }
 
 }

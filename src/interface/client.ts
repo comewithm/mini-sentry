@@ -14,4 +14,6 @@ export interface IClient<O extends IClientOptions = IClientOptions> {
 
     getOptions(): O;
 
+    setupIntegrations(): void
+
 }
