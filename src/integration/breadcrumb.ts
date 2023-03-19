@@ -104,7 +104,7 @@ function fetchCallback(handleData: THandleData & IFetchData){
     if(handleData.error) {
         getCurrentStore().addBreadcrumb({
             type: "fetch",
-            data: handleData.data,
+            data: handleData,
             level: 'error',
             superType: "http"
         }, {
@@ -115,7 +115,7 @@ function fetchCallback(handleData: THandleData & IFetchData){
         getCurrentStore().addBreadcrumb({
             type: "fetch",
             data: {
-                ...handleData.data,
+                ...handleData,
                 statusCode: handleData.response && handleData.response.status
             },
             superType: "http"

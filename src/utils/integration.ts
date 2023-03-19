@@ -129,6 +129,8 @@ function handleFetch(){
                         endTimestamp: Date.now(),
                         response: res
                     })
+
+                    return res
                 }, err => {
                     triggerHandlers("error", {
                         ...handleData,

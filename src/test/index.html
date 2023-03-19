@@ -9,9 +9,13 @@
 </head>
 <body>
     <script>
-        const requestUrl = "http://localhost:3000/fetch"
-        fetch(requestUrl).then(res => {
+        const requestUrl = "http://localhost:3000"
+        fetch(`${requestUrl}/fetch`).then(res => {
             console.log("res", res)
+
+            fetch(`${requestUrl}/test1`).then(res => {
+                console.log('res test', res)
+            })
         })
 
     </script>
