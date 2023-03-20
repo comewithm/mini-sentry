@@ -5,7 +5,7 @@ import { IBreadCrumbOptions } from "interface/breadcrumb";
 import { IFetchData, IHistoryData, IXHRData } from "interface/request";
 import { arrayToString } from "utils/helper";
 import { pushHandlers } from "utils/integration";
-import { getPerformance } from "./performance";
+import { getPerformance, getPerformanceEntries } from "./performance";
 
 type THandleData = Record<string, unknown>
 
@@ -33,7 +33,8 @@ export class BreadCrumb implements IIntegration {
         // 所有数据需要被收集起来
         if(this.options.performance) {
             // performance应该在onload时触发
-            performanceCallback(getPerformance())
+            // performanceCallback(getPerformance())
+            performanceCallback(getPerformanceEntries())
         }
         if(this.options.console) {
             pushHandlers("console", consoleCallback)

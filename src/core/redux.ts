@@ -1,5 +1,6 @@
 import { IRedux } from "integration/redux";
 import { IBreadCrumb, MAX_BREADCRUMB } from "interface/breadcrumb";
+import { getTimestamp } from "utils/helper";
 
 
 export class Redux implements IRedux {
@@ -18,7 +19,7 @@ export class Redux implements IRedux {
         }
 
         const mergedBreadcrumb = {
-            timestamp: Date.now(),
+            timestamp: getTimestamp(),
             ...breadCrumb
         }
 

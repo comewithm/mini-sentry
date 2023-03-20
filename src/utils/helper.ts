@@ -35,9 +35,20 @@ export function arrayToString(args:any[], separator:string = " ") {
 
 
 export function getTimestamp() {
-    return Date.now() / 1000
+    return Date.now()
 }
 
 export function createUUID() {
     return URL.createObjectURL(new Blob([''])).split('/').pop() as string
+}
+
+
+export function circulateTimestamp(lastTime:number = getTimestamp()) {
+    const now = getTimestamp()
+
+    const leaveTimestamp = now - lastTime;
+
+    lastTime = now
+
+    return leaveTimestamp
 }

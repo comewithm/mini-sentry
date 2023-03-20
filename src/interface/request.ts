@@ -13,6 +13,7 @@ export interface IFetchData {
 export interface IHistoryData {
     from: string;
     to:string;
+    leaveTimestamp: number;
     params?: any
 }
 

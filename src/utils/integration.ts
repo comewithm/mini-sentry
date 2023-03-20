@@ -1,9 +1,9 @@
 import { SHOULD_LOG } from "cons";
 import { THandleCallback, THandleType } from "interface";
-import { IFetchData, IXHRData, IXHRInfo } from "interface/request";
+import { IFetchData, IXHRInfo } from "interface/request";
 import { fill, getFetchMethod, getFetchUrl } from "utils";
 import { CONSOLE_LEVELS } from "./console";
-import { WINDOW } from "./helper";
+import { circulateTimestamp, getTimestamp, WINDOW } from "./helper";
 
 const handlers: {
     [key in THandleType]?: THandleCallback[]
@@ -89,6 +89,17 @@ function handleError(){
         }
         return false
     }
+
+    WINDOW.addEventListener("error", function(event){
+        console.log("addEventListener error:", event)
+        triggerHandlers("error", {
+            event:{
+                ...event,
+                errorType: `resource-${event.target.nodeName}`,
+                errorResource: event.target.currentSrc
+            }
+        })
+    }, true)
 }
 
 function handlerUnhandledrejection(){
@@ -115,7 +126,7 @@ function handleFetch(){
                     method: getFetchMethod(args),
                     url: getFetchUrl(args)
                 },
-                startTimestamp: Date.now()
+                startTimestamp: getTimestamp()
             }
 
             triggerHandlers("fetch", {
@@ -126,7 +137,7 @@ function handleFetch(){
                 .then(res => {
                     triggerHandlers("fetch", {
                         ...handleData,
-                        endTimestamp: Date.now(),
+                        endTimestamp: getTimestamp(),
                         response: res
                     })
 
@@ -135,7 +146,7 @@ function handleFetch(){
                     triggerHandlers("error", {
                         ...handleData,
                         error: err,
-                        endTimestamp: Date.now()
+                        endTimestamp: getTimestamp()
                     })
 
                     throw err
@@ -146,6 +157,7 @@ function handleFetch(){
 
 
 let lastHref;
+let lastTime = getTimestamp();
 function handleHistory(){
     // popstate
     const oldPopstate = WINDOW.onpopstate
@@ -153,9 +165,13 @@ function handleHistory(){
     const to = WINDOW.location.href;
     lastHref = to
 
+    // 计算跳转时间
+    const leaveTimestamp = circulateTimestamp(lastTime)
+    
     triggerHandlers("history", {
         from,
-        to
+        to,
+        leaveTimestamp
     })
 
     if(oldPopstate) {
@@ -164,7 +180,7 @@ function handleHistory(){
         } catch (error) {
             triggerHandlers("error", {
                 error,
-                endTimestamp: Date.now()
+                endTimestamp: getTimestamp()
             })
         }
     }
@@ -174,7 +190,7 @@ function handleHistory(){
         originalState
     ) {
         return function(this:History) {
-            const args = [].slice.call(arguments, 1)
+            const args = [].slice.call(arguments)
 
             const [state = null, title = '', url = ''] = args
             if(url) {
@@ -182,10 +198,14 @@ function handleHistory(){
                 const to = url + ''
                 lastHref = to
 
+                // 计算跳转时间
+                const leaveTimestamp = circulateTimestamp(lastTime)
+
                 triggerHandlers("history", {
                     from,
                     to,
-                    params: state
+                    params: state,
+                    leaveTimestamp
                 })
             }
 
@@ -220,8 +240,8 @@ function handleXHR(){
                     triggerHandlers("xhr", {
                         args,
                         xhr,
-                        startTimestamp: Date.now(),
-                        endTimestamp: Date.now()
+                        startTimestamp: getTimestamp(),
+                        endTimestamp: getTimestamp()
                     })
 
                     return originalReadyState.apply(xhr, readyStateArgs)
@@ -238,7 +258,7 @@ function handleXHR(){
             this.__SENTRY__XHR.body = args[0]
             triggerHandlers("xhr", {
                 args,
-                startTimestamp: Date.now(),
+                startTimestamp: getTimestamp(),
                 xhr: this
             })
 

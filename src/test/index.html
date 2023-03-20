@@ -8,7 +8,30 @@
     <script src="../../dist/bundle.js"></script>
 </head>
 <body>
+    <p>Test Title</p>
+
+    <div>
+        <!-- <a href="./page1.html">go to page 1</a> -->
+        <button id="btnPushState">pushstate</button>
+    </div>
+
+    <div>
+        <button type="button" onclick="history.back()">Back</button>
+        <button type="button" onclick="history.forward()">Forward</button>
+        <button type="button" onclick="history.go(1)">Go(1)</button>
+        <button type="button" onclick="history.go(2)">Go(2)</button>
+        <button type="button" onclick="history.go(-1)">Go(-1)</button>
+        <button type="button" onclick="history.go(-2)">Go(-2)</button>
+    </div>
     <script>
+
+        btnPushState.onclick = function (ev) {
+            console.log('====================================');
+            console.log("click");
+            console.log('====================================');
+            history.pushState({ data: "pushState" }, "", `/page1.html`)
+        }
+
         const requestUrl = "http://localhost:3000"
         fetch(`${requestUrl}/fetch`).then(res => {
             console.log("res", res)
@@ -17,6 +40,7 @@
                 console.log('res test', res)
             })
         })
+
 
     </script>
 </body>

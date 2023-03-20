@@ -3,6 +3,8 @@ import bodyParser from 'body-parser'
 import express from 'express'
 import createError from 'http-errors'
 
+import path from 'path'
+
 const port = 3000
 
 const app = express()
@@ -63,6 +65,13 @@ app.get("/test1", (_req, _res) => {
 app.get("/test2", (_req, _res) => {
     _res.send("test2")
 })
+
+
+
+app.get("*", (_req, _res) => {
+    _res.sendFile(path.resolve(__dirname, "../src/test/page1.html"))
+})
+
 
 server.listen(port, () => {
     console.log("监听端口: ", port)

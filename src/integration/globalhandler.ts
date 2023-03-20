@@ -54,18 +54,28 @@ function globalErrorHandler(){
             url: any,
             line:any,
             col: any,
-            error: any
+            error: any,
+            event: any
         }
     ) {
         // TODO
         const store = getCurrentStore()
 
-        const event = {
-            ...errorInfo,
-            level: "error"
+        if(errorInfo.error) {
+            const event = {
+                ...errorInfo,
+                level: "error"
+            }
+    
+            addEventAndCapture(store, errorInfo.error, event, "onerror")
+        } else if(errorInfo.event) {
+            const event = {
+                ...errorInfo.event,
+                level: "error"
+            }
+            addEventAndCapture(store, errorInfo.event, event, "onerror")
         }
 
-        addEventAndCapture(store, errorInfo.error, event, "onerror")
     })
 }
 
