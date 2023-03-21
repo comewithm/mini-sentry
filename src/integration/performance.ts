@@ -110,18 +110,20 @@ export function getPerformanceEntries() {
         domReadyTime
     }
 
-    console.log("performance entries:", info)
+    console.log("performance entries:", info, performanceInfo)
     
     return performanceInfo
 }
 
 // 获取当前的PV,UV
 export function initTotalPV() {
-    const PVInfo = 
-        ((
-            localStorage.getItem("PV_UV") && 
-            JSON.parse(localStorage.getItem("PV_UV")!)
-        ) || initPVUV) as IPVUVInfo;
+    let PVInfo;
+    let hasPV = localStorage.getItem("PV_UV")
+    if(!!hasPV) {
+        PVInfo = JSON.parse(localStorage.getItem("PV_UV") || '')
+    } else {
+        PVInfo = initPVUV
+    }
 
     PVUVInfo = PVInfo
 
@@ -129,10 +131,11 @@ export function initTotalPV() {
 }
 
 // 计算PV,UV
-export function circulateTotalPV(isFirstLoad: boolean = false) {
+export function circulateTotalPV() {
     const {PV, UV} = PVUVInfo
+    // UV计算应该根据用户唯一标识计算(目前是根据lastHref值是否存在判断)
     PVUVInfo = {
-        UV: isFirstLoad ? UV + 1 : UV,
+        UV: hasCurrentUV() ? UV : UV + 1,
         PV: PV + 1,
     }
 
@@ -149,4 +152,15 @@ export function getCurrentPathPV(currentPath: string):number {
     localStorage.setItem(`PV_${currentPath}`, JSON.stringify(currentPV))
 
     return currentPV
+}
+
+
+export function hasCurrentUV():boolean {
+    const flag = !!localStorage.getItem("userId")
+    // 没有当前UV
+    if(!flag) {
+        localStorage.setItem("userId", '1')
+        return false
+    }
+    return true
 }

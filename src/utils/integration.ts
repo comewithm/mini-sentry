@@ -160,14 +160,15 @@ function handleFetch(){
 let lastHref;
 let lastTime = getTimestamp();
 function handleHistory(){
+    SHOULD_LOG && console.log("trigger history")
     // popstate
     const oldPopstate = WINDOW.onpopstate
     const from = lastHref
     const to = WINDOW.location.href;
     lastHref = to
 
-    // 在history中其他数据的处理
     const {leaveTimestamp, totalPVUVInfo, currentPV} = injectInHistory(to)
+    
     
     triggerHandlers("history", {
         from,
@@ -200,7 +201,6 @@ function handleHistory(){
                 const from = lastHref
                 const to = url + ''
                 lastHref = to
-                // 在history中其他数据的处理
                 const {leaveTimestamp, totalPVUVInfo, currentPV} = injectInHistory(to)
 
                 triggerHandlers("history", {
@@ -297,7 +297,7 @@ function injectInHistory(currentPath: string = '') {
     // 计算跳转时间
     const leaveTimestamp = circulateTimestamp(lastTime)
     // 计算总PVUV
-    const totalPVUVInfo = circulateTotalPV(!lastHref)
+    const totalPVUVInfo = circulateTotalPV()
     // 计算当前页面的PV
     const currentPV = getCurrentPathPV(currentPath)
 

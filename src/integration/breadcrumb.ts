@@ -46,9 +46,9 @@ export class BreadCrumb implements IIntegration {
             pushHandlers("fetch", fetchCallback)
         }
         if(this.options.history) {
-            pushHandlers("history", historyCallback)
             // 有history就计算PV,UV
             initTotalPV()
+            pushHandlers("history", historyCallback)
         }
     }
 }

@@ -1,4 +1,6 @@
 import { BaseClient } from "client";
+import { SHOULD_LOG } from "cons";
+import { getCurrentStore } from "core/store";
 import { IClientOptions } from "interface/options";
 import { WINDOW } from "utils/helper";
 
@@ -13,11 +15,13 @@ export class BrowserClient extends BaseClient<IClientOptions> {
 
         // 页面隐藏时可以触发 navigator.sendBeacon(url, data)
         if(WINDOW.document) {
-            if(WINDOW.document.visibilityState === 'hidden') {
-                // sendBeacon()
-
-
-            }
+            WINDOW.document.addEventListener("visibilitychange", function() {
+                if(WINDOW.document.visibilityState === 'hidden') {
+                    // sendBeacon()
+                    const breadCrumb = getCurrentStore().getRedux();
+                    SHOULD_LOG && console.log("send beacon data", breadCrumb)
+                }
+            })
         }
     }
 
