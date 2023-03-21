@@ -1,4 +1,5 @@
 import { SHOULD_LOG } from "cons";
+import { circulateTotalPV, getCurrentPathPV } from "integration/performance";
 import { THandleCallback, THandleType } from "interface";
 import { IFetchData, IXHRInfo } from "interface/request";
 import { fill, getFetchMethod, getFetchUrl } from "utils";
@@ -165,13 +166,15 @@ function handleHistory(){
     const to = WINDOW.location.href;
     lastHref = to
 
-    // 计算跳转时间
-    const leaveTimestamp = circulateTimestamp(lastTime)
+    // 在history中其他数据的处理
+    const {leaveTimestamp, totalPVUVInfo, currentPV} = injectInHistory(to)
     
     triggerHandlers("history", {
         from,
         to,
-        leaveTimestamp
+        leaveTimestamp,
+        totalPVUVInfo,
+        currentPV
     })
 
     if(oldPopstate) {
@@ -197,15 +200,16 @@ function handleHistory(){
                 const from = lastHref
                 const to = url + ''
                 lastHref = to
-
-                // 计算跳转时间
-                const leaveTimestamp = circulateTimestamp(lastTime)
+                // 在history中其他数据的处理
+                const {leaveTimestamp, totalPVUVInfo, currentPV} = injectInHistory(to)
 
                 triggerHandlers("history", {
                     from,
                     to,
                     params: state,
-                    leaveTimestamp
+                    leaveTimestamp,
+                    totalPVUVInfo,
+                    currentPV
                 })
             }
 
@@ -287,4 +291,19 @@ function handleConsole(){
             }
         })
     })
+}
+
+function injectInHistory(currentPath: string = '') {
+    // 计算跳转时间
+    const leaveTimestamp = circulateTimestamp(lastTime)
+    // 计算总PVUV
+    const totalPVUVInfo = circulateTotalPV(!lastHref)
+    // 计算当前页面的PV
+    const currentPV = getCurrentPathPV(currentPath)
+
+    return {
+        leaveTimestamp,
+        totalPVUVInfo,
+        currentPV
+    }
 }

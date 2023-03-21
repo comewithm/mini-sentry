@@ -1,4 +1,4 @@
-interface IPerformanceInfo {
+export interface IPerformanceInfo {
     pageLoadTime?: number;
     whiteScreenTime?: number;
     directTime?: number;
@@ -6,4 +6,12 @@ interface IPerformanceInfo {
     dnsTime?: number;
     tcpTime?: number;
     requestTime?: number;
+    firstScreenTime?:number;
+    domReadyTime?:number;
+    beforeDomLoadTime?: number;
+}
+
+export interface IPVUVInfo {
+    PV:number;
+    UV:number;
 }

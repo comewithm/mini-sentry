@@ -5,7 +5,7 @@ import { IBreadCrumbOptions } from "interface/breadcrumb";
 import { IFetchData, IHistoryData, IXHRData } from "interface/request";
 import { arrayToString } from "utils/helper";
 import { pushHandlers } from "utils/integration";
-import { getPerformance, getPerformanceEntries } from "./performance";
+import { initTotalPV, getPerformance, getPerformanceEntries } from "./performance";
 
 type THandleData = Record<string, unknown>
 
@@ -47,6 +47,8 @@ export class BreadCrumb implements IIntegration {
         }
         if(this.options.history) {
             pushHandlers("history", historyCallback)
+            // 有history就计算PV,UV
+            initTotalPV()
         }
     }
 }
