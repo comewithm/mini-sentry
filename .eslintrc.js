@@ -14,6 +14,7 @@ module.exports = {
   },
   plugins: ["html"],
   extends: [
+    'eslint:recommended',
     "prettier"
   ],
   rules: {
