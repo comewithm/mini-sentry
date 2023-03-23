@@ -1,15 +1,22 @@
 module.exports = {
+  root: true,
+  parser: "@typescript-eslint/parser",
+  parserOptions: {
+    parser: "babel-eslint",
+    ecmaVersion: 6,
+    sourceType: "module",
+    allowImportExportEverywhere: true,
+  },
   env: {
     browser: true,
+    es6: true,
     es2021: true
   },
-  extends: 'standard-with-typescript',
-  overrides: [
+  plugins: ["html"],
+  extends: [
+    "prettier"
   ],
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module'
-  },
   rules: {
+
   }
 }
