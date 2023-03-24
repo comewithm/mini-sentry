@@ -27,8 +27,18 @@ export function init(options: IOptions) {
 }
 
 init({
-  performance: true,
-  xhr: true,
-  history: true,
-  fetch: true,
+  integrations: [
+    new BreadCrumb({
+      performance: true,
+      xhr: true,
+      history: true,
+      fetch: true,
+      console: true,
+    }),
+    new GlobalHandler({
+        onerror: true,
+        onunhandledrejection: true,
+    })
+  ],
+  reportUrl: "http://xxx"
 })

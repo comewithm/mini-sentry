@@ -142,7 +142,7 @@ export function createStore(register, store:Store): boolean {
         return false
     }
 
-    const __SENTRY__ = register.__SENTRY || {}
+    const __SENTRY__ = register.__SENTRY__ || {}
 
     __SENTRY__.store = store
 

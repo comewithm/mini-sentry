@@ -1,3 +1,3 @@
 
 
-export const CONSOLE_LEVELS = ['warn', 'error', 'info', 'debug']
+export const CONSOLE_LEVELS = ['warn', 'error', 'info', 'debug', 'log']
