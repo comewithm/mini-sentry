@@ -76,10 +76,12 @@ function handleError() {
     error: any
   ): boolean {
     triggerHandlers('error', {
-      message,
-      url,
-      line,
-      col,
+      event: {
+        message,
+        url,
+        line,
+        col,
+      },
       error,
     })
 
@@ -92,7 +94,7 @@ function handleError() {
   WINDOW.addEventListener(
     'error',
     function (event) {
-      console.log('addEventListener error:', event)
+      console.log('addEventListener error', event)
       triggerHandlers('error', {
         event: {
           ...event,
@@ -107,8 +109,12 @@ function handleError() {
 
 function handlerUnhandledrejection() {
   const originalRejection = WINDOW.onunhandledrejection
-  WINDOW.onunhandledrejection = function (e) {
-    triggerHandlers('unhandledrejection', e)
+  WINDOW.onunhandledrejection = function (e: PromiseRejectionEvent) {
+    triggerHandlers('unhandledrejection', {
+      event: {
+        ...e.reason,
+      },
+    })
 
     if (originalRejection) {
       return originalRejection.apply(this, arguments)

@@ -40,7 +40,6 @@ export abstract class BaseClient<O extends IClientOptions>
     let eventId: string | undefined = hint?.event_id
     console.log('captureException exception:', exception)
     console.log('captureException hint:', hint)
-    console.log('captureException redux:', redux)
     return eventId
   }
 
@@ -52,7 +51,6 @@ export abstract class BaseClient<O extends IClientOptions>
     let eventId: string | undefined = hint?.event_id
     console.log('capture event:', event)
     console.log('capture hint:', hint)
-    console.log('capture redux:', redux)
     return eventId
   }
 

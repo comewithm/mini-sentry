@@ -13,6 +13,7 @@
     <div>
         <a href="./page1.html">go to page 1</a>
         <button id="btnPushState">pushstate</button>
+        <img src="http:abc.png" />
     </div>
 
     <div>
@@ -33,14 +34,23 @@
         }
 
         const requestUrl = "http://localhost:3000"
-        fetch(`${requestUrl}/fetch`).then(res => {
-            console.log("res", res)
+        fetch(`${requestUrl}/fetch`)
+            .then(res => res.json())
+            .then(res => {
+                console.log("fetch result", res)
+            });
 
-            fetch(`${requestUrl}/test1`).then(res => {
-                console.log('res test', res)
+        fetch(`${requestUrl}/test1`)
+            .then(res => res.json())
+            .then(res => {
+                console.log("fetch test", res)
             })
-        })
 
+        // let p = new Promise((resolve, reject) => {
+        //     throw new Error("reject")
+        // })
+
+        a.b()
 
     </script>
 </body>

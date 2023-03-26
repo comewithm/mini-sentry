@@ -1,36 +1,36 @@
-
-
 export interface IFetchData {
-    args: any[];
-    data: {
-        method: string;
-        url: string;
-    };
-    startTimestamp: number;
-    response?: any 
+  args: any[]
+  data: {
+    method: string
+    url: string
+  }
+  startTimestamp: number
+  endTimestamp?: number
+  response?: any
 }
 
 export interface IHistoryData {
-    from: string;
-    to:string;
-    leaveTimestamp: number;
-    params?: any
+  from: string
+  to: string
+  leaveTimestamp: number
+  params?: any
 }
 
 export interface IXHRInfo {
-    method: string;
-    url: string;
-    body?: any
-    status?: number;
+  method: string
+  url: string
+  body?: any
+  status?: number
 }
 export interface IXHRData {
-    args: IXHRInfo,
-    startTimestamp?: number;
-    endTimestamp?: number;
-    xhr?: any;
+  args: IXHRInfo
+  startTimestamp?: number
+  endTimestamp?: number
+  xhr?: any
 }
 
 export interface IErrorData {
-
+  error: Error | null
+  event?: any
+  endTimestamp?: number
 }
-

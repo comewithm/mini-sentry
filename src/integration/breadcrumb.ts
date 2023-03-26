@@ -1,7 +1,8 @@
 import { SHOULD_LOG } from 'cons'
 import { getCurrentStore } from 'core/store'
 import { IIntegration } from 'interface'
-import { IBreadCrumbOptions } from 'interface/breadcrumb'
+import { IBreadCrumb, IBreadCrumbOptions } from 'interface/breadcrumb'
+import { IPerformanceInfo } from 'interface/performance'
 import { IFetchData, IHistoryData, IXHRData } from 'interface/request'
 import { arrayToString } from 'utils/helper'
 import { pushHandlers } from 'utils/integration'
@@ -60,7 +61,7 @@ export class BreadCrumb implements IIntegration {
 function consoleCallback(
   handleData: THandleData & { args: unknown[]; level: string }
 ) {
-  const crumb = {
+  const crumb: IBreadCrumb = {
     type: 'console',
     data: {
       args: handleData.args,
@@ -74,7 +75,7 @@ function consoleCallback(
 
   getCurrentStore().addBreadcrumb(crumb, {
     level: handleData.level,
-    args: handleData.data,
+    args: handleData.args,
   })
 }
 
@@ -152,7 +153,7 @@ function historyCallback(handleData: IHistoryData) {
   })
 }
 
-function performanceCallback(performanceInfo) {
+function performanceCallback(performanceInfo: IPerformanceInfo) {
   getCurrentStore().addBreadcrumb({
     type: 'performance',
     data: performanceInfo,
