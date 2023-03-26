@@ -28,7 +28,13 @@
                 onunhandledrejection: true,
             })
         ]
-        reportUrl: "http://xxx"
+        reportUrl: "http://xxx",
+        initUserInfo: {
+            userInfo: {
+                id: 100,
+                name: "prayer",
+            }
+        }
     })
 ```
 
@@ -45,6 +51,7 @@
 | `onerror` | `boolean` | 监听onerror事件收集错误 |
 | `onunhandledrejection` | `boolean` | 监听promise相关错误 |
 | `reportUrl` | `string` | 监听数据上传地址 |
+| `initUserInfo` | `object` | 初始化当前用户信息 |
 
 
 #### 数据收集 & 上传

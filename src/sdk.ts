@@ -33,12 +33,18 @@ init({
       xhr: true,
       history: true,
       fetch: true,
-      console: true,
+      console: false,
     }),
     new GlobalHandler({
-        onerror: true,
-        onunhandledrejection: true,
-    })
+      onerror: true,
+      onunhandledrejection: true,
+    }),
   ],
-  reportUrl: "http://xxx"
+  reportUrl: 'http://xxx',
+  initUserInfo: {
+    userInfo: {
+      id: 100,
+      name: 'prayer',
+    },
+  },
 })

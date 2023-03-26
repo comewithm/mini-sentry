@@ -1,8 +1,13 @@
-import { IBreadCrumb } from "interface/breadcrumb";
+import { IBreadCrumb } from 'interface/breadcrumb'
 
 export interface IRedux {
+  addBreadCrumb(breadCrumb: IBreadCrumb, maxBreadCrumb?: number): this
 
-    addBreadCrumb(breadCrumb: IBreadCrumb, maxBreadCrumb?: number): this
+  updateUserInfo(initUserInfo: any): this
 
-    clearBreadCrumb(): this
+  clear(): this
+
+  setItemInLocal(): this
+
+  hasItemInLocal(): boolean
 }

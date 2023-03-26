@@ -14,7 +14,7 @@ module.exports = {
   },
   plugins: ["html"],
   extends: [
-    'eslint:recommended',
+    // 'eslint:recommended', // 禁用未声明的变量
     "prettier"
   ],
   rules: {
