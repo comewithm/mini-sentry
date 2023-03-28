@@ -40,7 +40,10 @@ init({
       onunhandledrejection: true,
     }),
   ],
-  reportUrl: 'http://xxx',
+  report: {
+    reportType: ['fetch', 'xhr'],
+    reporturl: "http://localhost:3000/report"
+  },
   initUserInfo: {
     userInfo: {
       id: 100,

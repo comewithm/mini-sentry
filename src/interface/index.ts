@@ -1,9 +1,10 @@
 import { Store } from 'core/store'
 import { IUserInfo } from './store'
+import { TReportInfo } from './reporter'
 
 export interface IOptions {
   [key: string]: any
-  reportUrl?: string
+  report?: TReportInfo
   initUserInfo?: IUserInfo
 }
 

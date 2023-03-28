@@ -1,15 +1,16 @@
-import { IRedux } from 'integration/redux'
+import { IRedux, TBreadCrumbByType, TReduxInfo } from 'integration/redux'
+import { THandleType } from 'interface'
 import { IBreadCrumb, MAX_BREADCRUMB } from 'interface/breadcrumb'
 import { IUserInfo } from 'interface/store'
 import { getTimestamp } from 'utils/helper'
 
 export class Redux implements IRedux {
-  breadcrumb: IBreadCrumb[]
+  breadcrumb: TBreadCrumbByType
 
   user: IUserInfo
 
   constructor() {
-    this.breadcrumb = []
+    this.breadcrumb = {} 
     this.user = {}
   }
 
@@ -21,16 +22,28 @@ export class Redux implements IRedux {
       return this
     }
 
+    const {type, superType} = breadCrumb
+
     const mergedBreadcrumb = {
       timestamp: getTimestamp(),
       ...breadCrumb,
     }
 
-    this.breadcrumb = [...this.breadcrumb, mergedBreadcrumb]
+    this.breadcrumb[type] = [
+      ...this.breadcrumb[type],
+      mergedBreadcrumb
+    ]
 
     console.log('this.breadcrumb:', this.breadcrumb)
 
     return this
+  }
+
+  getAllReduxInfo(): TReduxInfo {
+    return {
+      breadcrumb: this.breadcrumb,
+      user: this.user
+    }
   }
 
   updateUserInfo(initUserInfo: IUserInfo): this {
@@ -40,8 +53,13 @@ export class Redux implements IRedux {
   }
 
   clear(): this {
-    this.breadcrumb = []
+    this.breadcrumb = {}
     this.user = {}
+    return this
+  }
+
+  clearBreadcrumbByType(type: THandleType): this {
+    this.breadcrumb[type] = []
     return this
   }
 

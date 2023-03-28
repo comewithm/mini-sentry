@@ -59,7 +59,18 @@
 + 内部根据监听页面的状态上传
 
 
+上传数据时机:
++ 切换路由
+  + 每次路由跳转切换时，上传数据。
+
++ 没有切换路由
+  + 切换tab
+    + 每次切换tab时，上传数据。
+  + 没有切换tab
+    + 定时上传数据(只在当前路由活动)
+
 ```javascript
+// 页面关闭，页面隐藏，最小化，都会触发该监听函数
 if(window.document) {
     document.addEventListener("visibilitychange", function(){
         if(document.visibilityState === 'hidden') {

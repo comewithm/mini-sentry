@@ -10,7 +10,7 @@ export interface IBreadCrumbOptions {
 
 export interface IBreadCrumb {
   /**添加的类型 */
-  type?: string
+  type: string
   /**当前type的父级类型 */
   superType?: string
   /**添加的数据 */
