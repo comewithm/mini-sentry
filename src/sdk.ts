@@ -6,8 +6,9 @@ import { mergeIntegrations } from 'core/integrations'
 import { IOptions } from 'interface'
 import { GlobalHandler } from 'integration/globalhandler'
 import { SHOULD_LOG } from './cons'
+import { Reporter } from 'core/reporter'
 
-export const defaultIntegrations = [new BreadCrumb(), new GlobalHandler()]
+export const defaultIntegrations = [new BreadCrumb(), new GlobalHandler(), new Reporter()]
 
 export function init(options: IOptions) {
   SHOULD_LOG && console.log('init')
@@ -39,11 +40,11 @@ init({
       onerror: true,
       onunhandledrejection: true,
     }),
+    new Reporter({
+      reportType: ['fetch', 'xhr'],
+      reporturl: "http://localhost:3000/report"
+    })
   ],
-  report: {
-    reportType: ['fetch', 'xhr'],
-    reporturl: "http://localhost:3000/report"
-  },
   initUserInfo: {
     userInfo: {
       id: 100,

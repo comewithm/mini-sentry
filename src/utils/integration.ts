@@ -5,6 +5,8 @@ import { IFetchData, IXHRInfo } from 'interface/request'
 import { fill, getFetchMethod, getFetchUrl } from 'utils'
 import { CONSOLE_LEVELS } from './console'
 import { circulateTimestamp, getTimestamp, WINDOW } from './helper'
+import { getCurrentStore } from 'core/store'
+import { Reporter } from 'core/reporter'
 
 const handlers: {
   [key in THandleType]?: THandleCallback[]
@@ -186,6 +188,9 @@ function handleHistory() {
     currentPV,
   })
 
+  // 在路由跳转之前，发送数据
+  getCurrentStore().getClient()?.getIntegrations(Reporter)?.sendReport()
+
   if (oldPopstate) {
     try {
       return oldPopstate.apply(WINDOW, [].slice.call(arguments))
@@ -218,6 +223,9 @@ function handleHistory() {
           currentPV,
         })
       }
+
+      // 在路由跳转之前，发送数据
+      getCurrentStore().getClient()?.getIntegrations(Reporter)?.sendReport()
 
       return originalState.apply(this, args)
     }

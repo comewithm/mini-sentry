@@ -21,21 +21,25 @@
                 xhr: true,
                 history: true,
                 fetch: true,
-                console: true,
+                console: false,
             }),
             new GlobalHandler({
                 onerror: true,
                 onunhandledrejection: true,
+            }),
+            new Reporter({
+                reportType: ['fetch', 'xhr'],
+                reporturl: "http://localhost:3000/report"
             })
-        ]
-        reportUrl: "http://xxx",
+        ],
         initUserInfo: {
             userInfo: {
                 id: 100,
-                name: "prayer",
-            }
-        }
+                name: 'prayer',
+            },
+        },
     })
+
 ```
 
 #### 配置说明
@@ -51,6 +55,7 @@
 | `onerror` | `boolean` | 监听onerror事件收集错误 |
 | `onunhandledrejection` | `boolean` | 监听promise相关错误 |
 | `reportUrl` | `string` | 监听数据上传地址 |
+| `reportType` | `string` | 需要上报的类型:(以上BreadCrumb和GlobalHandler中的类型) |
 | `initUserInfo` | `object` | 初始化当前用户信息 |
 
 

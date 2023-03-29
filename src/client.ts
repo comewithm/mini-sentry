@@ -1,7 +1,7 @@
 import { setupIntegrations } from 'core/integrations'
 import { getCurrentStore } from 'core/store'
 import { IRedux } from 'integration/redux'
-import { IIntegrationIndex } from 'interface'
+import { IIntegration, IIntegrationCls, IIntegrationIndex } from 'interface'
 import { IClient } from 'interface/client'
 import { IEventHint } from 'interface/event'
 import { IClientOptions } from 'interface/options'
@@ -63,6 +63,19 @@ export abstract class BaseClient<O extends IClientOptions>
       this.isSetup = true
       // 初始化
       this.integrations = setupIntegrations(this.options.integrations)
+    }
+  }
+
+  /**
+   * @description 根据初始化的Class id获取不同的Class实例
+   * @param integration 
+   * @returns 
+   */
+  getIntegrations<T extends IIntegration>(integration: IIntegrationCls<T>): T | null {
+    try {
+      return (this.integrations[integration.id] as T) || null
+    } catch (error) {
+      return null
     }
   }
 }

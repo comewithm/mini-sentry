@@ -1,10 +1,8 @@
 import { Store } from 'core/store'
 import { IUserInfo } from './store'
-import { TReportInfo } from './reporter'
 
 export interface IOptions {
   [key: string]: any
-  report?: TReportInfo
   initUserInfo?: IUserInfo
 }
 
@@ -22,11 +20,17 @@ export interface IIntegration {
   name: string
 
   setup(
-    addGlobalEvent: (callback: any) => void,
-    getCurrentStore: () => Store
+    addGlobalEvent?: (callback: any) => void,
+    getCurrentStore?: () => Store
   ): void
 }
 
 export interface IIntegrationIndex {
   [key: string]: IIntegration
+}
+
+
+export interface IIntegrationCls<T> {
+  id: string;
+  new (options?: any): T
 }

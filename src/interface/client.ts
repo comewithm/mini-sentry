@@ -1,6 +1,7 @@
 import { IRedux } from "integration/redux";
 import { IEventHint } from "./event";
 import { IClientOptions } from "./options";
+import { IIntegration, IIntegrationCls } from "interface";
 
 
 export interface IClient<O extends IClientOptions = IClientOptions> {
@@ -15,5 +16,7 @@ export interface IClient<O extends IClientOptions = IClientOptions> {
     getOptions(): O;
 
     setupIntegrations(): void
+
+    getIntegrations<T extends IIntegration>(integration: IIntegrationCls<T>): T | null;
 
 }

@@ -1,19 +1,16 @@
 import { BaseClient } from "client";
 import { Reporter } from "core/reporter";
+import { getCurrentStore } from "core/store";
 import { IClientOptions } from "interface/options";
 import { WINDOW } from "utils/helper";
 
 
 export class BrowserClient extends BaseClient<IClientOptions> {
 
-    public report: Reporter
-
     constructor(options: IClientOptions){
 
         super(options)
         
-        this.report = new Reporter(options.report)
-
         this.beforeUnload()
     }
 
@@ -30,7 +27,10 @@ export class BrowserClient extends BaseClient<IClientOptions> {
     }
 
     uploadData() {
-        this.report.sendReport()
+        // 获取reporter
+        let reporter = getCurrentStore().getClient()?.getIntegrations(Reporter)
+
+        reporter?.sendReport()
     }
 
 }
