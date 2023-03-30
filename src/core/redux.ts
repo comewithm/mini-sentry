@@ -10,7 +10,7 @@ export class Redux implements IRedux {
   user: IUserInfo
 
   constructor() {
-    this.breadcrumb = {} 
+    this.breadcrumb = {}
     this.user = {}
   }
 
@@ -22,17 +22,14 @@ export class Redux implements IRedux {
       return this
     }
 
-    const {type, superType} = breadCrumb
+    const { type, superType } = breadCrumb
 
     const mergedBreadcrumb = {
       timestamp: getTimestamp(),
       ...breadCrumb,
     }
 
-    this.breadcrumb[type] = [
-      ...this.breadcrumb[type],
-      mergedBreadcrumb
-    ]
+    this.breadcrumb[type] = [...(this.breadcrumb[type] || []), mergedBreadcrumb]
 
     console.log('this.breadcrumb:', this.breadcrumb)
 
@@ -42,7 +39,7 @@ export class Redux implements IRedux {
   getAllReduxInfo(): TReduxInfo {
     return {
       breadcrumb: this.breadcrumb,
-      user: this.user
+      user: this.user,
     }
   }
 

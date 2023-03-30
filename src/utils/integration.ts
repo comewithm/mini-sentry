@@ -97,13 +97,16 @@ function handleError() {
     'error',
     function (event) {
       console.log('addEventListener error', event)
-      triggerHandlers('error', {
-        event: {
-          ...event,
-          errorType: `resource-${event.target.nodeName}`,
-          errorResource: event.target.currentSrc,
-        },
-      })
+      if (event.error == undefined) {
+        // 区别addEventListener和onerror错误(资源错误中没有error属性)
+        triggerHandlers('error', {
+          event: {
+            ...event,
+            errorType: `resource-${event.target.nodeName}`,
+            errorResource: event.target.currentSrc,
+          },
+        })
+      }
     },
     true
   )

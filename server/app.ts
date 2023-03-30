@@ -3,7 +3,7 @@ import bodyParser from 'body-parser'
 import express from 'express'
 import createError from 'http-errors'
 
-import path from 'path'
+// import path from 'path'
 
 const port = 3000
 
@@ -51,7 +51,7 @@ function sleep(time: number) {
 }
 
 app.get('/fetch', async (_req, _res) => {
-  console.log('fetch: receive request', _req.url)
+  // console.log('fetch: receive request', _req.originalUrl)
   return _res.json({
     code: 10000,
     success: 'ok',
@@ -71,8 +71,16 @@ app.get('/test2', (_req, _res) => {
   _res.send('test2')
 })
 
-app.get('*', (_req, _res) => {
-  _res.sendFile(path.resolve(__dirname, '../src/test/page1.html'))
+// app.get('*', (_req, _res) => {
+//   _res.sendFile(path.resolve(__dirname, '../src/test/page1.html'))
+// })
+
+app.get('/report', (_req, _res) => {
+  console.log('report request:', _req)
+  return _res.json({
+    code: 200,
+    success: 'ok',
+  })
 })
 
 server.listen(port, () => {

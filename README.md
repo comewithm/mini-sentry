@@ -13,7 +13,7 @@
 ##### 初始化
 目前还是直接在bundle中调用，rollup打包还是不熟悉。。。之后看看要怎么改。
 ```js
-    import {BreadCrumb, GlobalHandler} from 'bundle.js'
+    import {BreadCrumb, GlobalHandler, Reporter} from 'bundle.js'
     init({
         integrations: [
             new BreadCrumb({
@@ -55,7 +55,7 @@
 | `onerror` | `boolean` | 监听onerror事件收集错误 |
 | `onunhandledrejection` | `boolean` | 监听promise相关错误 |
 | `reportUrl` | `string` | 监听数据上传地址 |
-| `reportType` | `string` | 需要上报的类型:(以上BreadCrumb和GlobalHandler中的类型) |
+| `reportType` | `string` | 需要上报的类型:(以上BreadCrumb和GlobalHandler中的类型)这里的类型需要收缩(比如fetch, xhr都属于http) |
 | `initUserInfo` | `object` | 初始化当前用户信息 |
 
 
@@ -64,7 +64,7 @@
 + 内部根据监听页面的状态上传
 
 
-上传数据时机:
+**上传数据时机**:
 + 切换路由
   + 每次路由跳转切换时，上传数据。
 

@@ -56,22 +56,21 @@ function globalErrorHandler() {
     'error',
     function errorCallback(errorInfo: { error: any; event: any }) {
       const store = getCurrentStore()
-
+      let event
       if (errorInfo.error) {
         // onerror错误
-        const event = {
+        event = {
           ...errorInfo,
           level: 'error',
         }
-
-        addEventAndCapture(store, errorInfo.error, event, 'onerror')
+        addEventAndCapture(store, errorInfo.error, event, 'error')
       } else {
         // addEventListener错误
-        const event = {
+        event = {
           ...errorInfo.event,
           level: 'error',
         }
-        addEventAndCapture(store, errorInfo.event, event, 'onerror')
+        addEventAndCapture(store, errorInfo.event, event, 'error')
       }
     }
   )
@@ -105,6 +104,11 @@ function addEventAndCapture(
   event: any,
   type: string
 ) {
+  store.addBreadcrumb({
+    data: event,
+    type,
+  })
+
   store.captureEvent(event, {
     originalException: error,
   })

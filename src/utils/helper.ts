@@ -29,11 +29,17 @@ export function getGlobalInstance(
 }
 
 export function arrayToString(args: any[], separator: string = ' ') {
+  if (!Array.isArray(args)) {
+    return ''
+  }
   const message: any[] = []
 
-  args.forEach((v) => {
-    message.push(JSON.stringify(v))
-  })
+  for (let i = 0; i < args.length; i++) {
+    const element = args[i]
+    try {
+      message.push(String(element))
+    } catch (error) {}
+  }
 
   return message.join(separator)
 }

@@ -13,6 +13,7 @@ export type THandleType =
   | 'console'
   | 'error'
   | 'unhandledrejection'
+  | 'performance'
 
 export type THandleCallback = (data: any) => void
 
@@ -29,8 +30,7 @@ export interface IIntegrationIndex {
   [key: string]: IIntegration
 }
 
-
 export interface IIntegrationCls<T> {
-  id: string;
+  id: string
   new (options?: any): T
 }
