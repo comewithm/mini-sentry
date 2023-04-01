@@ -1,5 +1,6 @@
 import { getCurrentStore } from 'core/store'
 import { IPerformanceInfo, IPVUVInfo } from 'interface/performance'
+import { logger } from 'utils/console'
 import { WINDOW } from 'utils/helper'
 
 const initPVUV: IPVUVInfo = {
@@ -107,7 +108,7 @@ export function getPerformanceEntries() {
     domReadyTime,
   }
 
-  console.log('performance entries:', info, performanceInfo)
+  logger.log('performance entries:', info, performanceInfo)
 
   return performanceInfo
 }

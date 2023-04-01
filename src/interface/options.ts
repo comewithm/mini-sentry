@@ -1,7 +1,7 @@
-import { TReportInfo } from "./reporter"
+import { IOptions } from 'interface'
+import { TReportInfo } from './reporter'
 
-
-export interface IClientOptions {
-    [key: string]: any
-    report?: TReportInfo
+export interface IClientOptions extends IOptions {
+  [key: string]: any
+  report?: TReportInfo
 }

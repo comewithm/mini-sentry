@@ -1,9 +1,9 @@
-import { SHOULD_LOG } from 'cons'
 import { getCurrentStore } from 'core/store'
 import { IIntegration } from 'interface'
 import { IBreadCrumb, IBreadCrumbOptions } from 'interface/breadcrumb'
 import { IPerformanceInfo } from 'interface/performance'
 import { IFetchData, IHistoryData, IXHRData } from 'interface/request'
+import { logger } from 'utils/console'
 import { arrayToString } from 'utils/helper'
 import { pushHandlers } from 'utils/integration'
 import {
@@ -22,7 +22,6 @@ export class BreadCrumb implements IIntegration {
   public options: IBreadCrumbOptions
 
   constructor(options?: Partial<IBreadCrumbOptions>) {
-    SHOULD_LOG && console.log('init breadcrumb', options)
     this.options = {
       console: false,
       xhr: true,

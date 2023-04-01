@@ -1,9 +1,8 @@
-import { SHOULD_LOG } from 'cons'
 import { circulateTotalPV, getCurrentPathPV } from 'integration/performance'
 import { THandleCallback, THandleType } from 'interface'
 import { IFetchData, IXHRInfo } from 'interface/request'
 import { fill, getFetchMethod, getFetchUrl } from 'utils'
-import { CONSOLE_LEVELS } from './console'
+import { CONSOLE_LEVELS, logger } from './console'
 import { circulateTimestamp, getTimestamp, WINDOW } from './helper'
 import { getCurrentStore } from 'core/store'
 import { Reporter } from 'core/reporter'
@@ -68,7 +67,7 @@ function collectType(type: THandleType) {
 function handleError() {
   const originalError = WINDOW.onerror
 
-  SHOULD_LOG && console.log('trigger error')
+  logger.log('trigger error')
 
   WINDOW.onerror = function (
     message: any,
@@ -96,7 +95,7 @@ function handleError() {
   WINDOW.addEventListener(
     'error',
     function (event) {
-      console.log('addEventListener error', event)
+      logger.log('addEventListener error', event)
       if (event.error == undefined) {
         // 区别addEventListener和onerror错误(资源错误中没有error属性)
         triggerHandlers('error', {
@@ -130,7 +129,7 @@ function handlerUnhandledrejection() {
 }
 
 function handleFetch() {
-  SHOULD_LOG && console.log('init fetch')
+  logger.log('init fetch')
 
   fill(WINDOW, 'fetch', function (originalFetch) {
     return function (...args: any[]) {
@@ -174,7 +173,7 @@ function handleFetch() {
 let lastHref
 let lastTime = getTimestamp()
 function handleHistory() {
-  SHOULD_LOG && console.log('trigger history')
+  logger.log('trigger history')
   // popstate
   const oldPopstate = WINDOW.onpopstate
   const from = lastHref

@@ -5,6 +5,7 @@ import { IIntegration, IIntegrationCls, IIntegrationIndex } from 'interface'
 import { IClient } from 'interface/client'
 import { IEventHint } from 'interface/event'
 import { IClientOptions } from 'interface/options'
+import { logger } from 'utils/console'
 
 type ClientClass<F extends IClient, T extends IClientOptions> = new (
   options: T
@@ -38,8 +39,8 @@ export abstract class BaseClient<O extends IClientOptions>
     redux?: IRedux
   ): string | undefined {
     let eventId: string | undefined = hint?.event_id
-    console.log('captureException exception:', exception)
-    console.log('captureException hint:', hint)
+    logger.log('captureException exception:', exception)
+    logger.log('captureException hint:', hint)
     return eventId
   }
 
@@ -49,8 +50,8 @@ export abstract class BaseClient<O extends IClientOptions>
     redux?: IRedux | undefined
   ): string | undefined {
     let eventId: string | undefined = hint?.event_id
-    console.log('capture event:', event)
-    console.log('capture hint:', hint)
+    logger.log('capture event:', event)
+    logger.log('capture hint:', hint)
     return eventId
   }
 
@@ -68,10 +69,12 @@ export abstract class BaseClient<O extends IClientOptions>
 
   /**
    * @description 根据初始化的Class id获取不同的Class实例
-   * @param integration 
-   * @returns 
+   * @param integration
+   * @returns
    */
-  getIntegrations<T extends IIntegration>(integration: IIntegrationCls<T>): T | null {
+  getIntegrations<T extends IIntegration>(
+    integration: IIntegrationCls<T>
+  ): T | null {
     try {
       return (this.integrations[integration.id] as T) || null
     } catch (error) {

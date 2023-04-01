@@ -4,6 +4,7 @@ import { IUserInfo } from './store'
 export interface IOptions {
   [key: string]: any
   initUserInfo?: IUserInfo
+  __DEBUG__?: boolean
 }
 
 export type THandleType =

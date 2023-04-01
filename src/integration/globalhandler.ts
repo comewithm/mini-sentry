@@ -1,6 +1,6 @@
-import { SHOULD_LOG } from 'cons'
 import { getCurrentStore, Store } from 'core/store'
 import { IIntegration } from 'interface'
+import { logger } from 'utils/console'
 import { pushHandlers } from 'utils/integration'
 
 type TGlobalHandleOption = {
@@ -26,7 +26,7 @@ export class GlobalHandler implements IIntegration {
   }
 
   constructor(options?: TGlobalHandleOption) {
-    SHOULD_LOG && console.log('init GlobalHandler', options)
+    logger.log('init GlobalHandler', options)
     this.options = {
       onerror: true,
       onunhandledrejection: true,
@@ -46,7 +46,7 @@ export class GlobalHandler implements IIntegration {
 }
 
 function globalErrorHandler() {
-  SHOULD_LOG && console.log('init globalErrorHandler')
+  logger.log('init globalErrorHandler')
   // 执行error回调
   /*
         onerror: {event:{message,url,line,col}, error}
@@ -78,10 +78,10 @@ function globalErrorHandler() {
 
 function globalRejectionHandler() {
   // 执行unhandledrejection回调
-  SHOULD_LOG && console.log('init globalRejectionHandler')
+  logger.log('init globalRejectionHandler')
 
   pushHandlers('unhandledrejection', function unhandledCallback(eve: any) {
-    SHOULD_LOG && console.log('globalRejectionHandler error:', eve)
+    logger.log('globalRejectionHandler error:', eve)
 
     let error = eve.event
 

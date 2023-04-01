@@ -2,6 +2,7 @@ import { IRedux, TBreadCrumbByType, TReduxInfo } from 'integration/redux'
 import { THandleType } from 'interface'
 import { IBreadCrumb, MAX_BREADCRUMB } from 'interface/breadcrumb'
 import { IUserInfo } from 'interface/store'
+import { logger } from 'utils/console'
 import { getTimestamp } from 'utils/helper'
 
 export class Redux implements IRedux {
@@ -31,7 +32,7 @@ export class Redux implements IRedux {
 
     this.breadcrumb[type] = [...(this.breadcrumb[type] || []), mergedBreadcrumb]
 
-    console.log('this.breadcrumb:', this.breadcrumb)
+    logger.log('this.breadcrumb:', this.breadcrumb)
 
     return this
   }
@@ -57,6 +58,7 @@ export class Redux implements IRedux {
 
   clearBreadcrumbByType(type: THandleType): this {
     this.breadcrumb[type] = []
+    logger.log('after clear:', this.breadcrumb)
     return this
   }
 
